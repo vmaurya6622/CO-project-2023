@@ -1,17 +1,19 @@
 # IMPORTANT :- vineet(2022575) has not contributed significantly in the completion of the project.
 
+
+#Providing file location of the file to test into the program
 file_location=r"E:\One Drive\OneDrive - indraprashtha institute of information technology\Practise code\python\Assignment\test2.txt"
 f = open(file_location,"r") #provide the file name here
 List = f.readlines()
 f.close()
 import sys
-Instruction_list = []
-variables = []
+Instruction_list = []      # Main list of all the instructions present in the input file
+variables = []             #All the variables which were declared at the beginning of the program will be kept in this list.
 check = 0
-global flag
+global flag     #Declaring flag as the global variable.
 flag=1
 
-def binary_convertor(n):
+def binary_convertor(n):        #Function to convert any immediate number to its binary form and adding zero(s) in front of it to make it of 7 bits.
     x=bin(n)
     x=x[2:]
     tk=[]
@@ -21,18 +23,18 @@ def binary_convertor(n):
     x="".join(tk)
     return(x)
 
-label_dict = {}
-instruction_index = 0
+label_dict = {}        #Dictionary of all the labels present in the testing file.
+instruction_index = 0  #Who store the index of the instructions so that easy traversal can be possible.
 
 for i in range(len(List)):
     if (List[i] != "\n"):
-        lnew = List[i].strip().split()
+        lnew = List[i].strip().split()     #.strip().split() Has been used to remove all the white spaces and new line characters.
         if lnew[0] == "var":
             if check == 0:
                 variables.append(lnew[1])
-            else:
+            else:              #If the variables are declared after an instruction or Not at the beginning then the program should exit.
                 flag = 0
-                print("\nERROR!: Variables not declared at the beginning\n")
+                print("\nERROR!: Variables not declared at the beginning\n")   
                 quit()
         
         elif (lnew[0][-1] == ":"):
@@ -70,38 +72,40 @@ if len(variables)!=0:
         variable_dict[i] = x
         length = length + 1
 
-# print("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+  WELCOME TO ASSEMBLY TO MACHINE CODE EXCHANGER  =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n")
+print("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+  WELCOME TO ASSEMBLY TO MACHINE CODE EXCHANGER  =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n")
+
+#Making the dictionaries naming OP codes, registers and unused bits. it will be useful and easy to get an access to all of them.
+
 opcode = {"add": "00000", "sub": "00001","movi":"00010", "mov": "00011", "ld": "00100", "st": "00101", "mul": "00110", 
     "div": "00111","rs": "01000", "ls": "01001", "xor": "01010", "or": "01011", "and": "01100", "not": "01101", "cmp": "01110", 
     "jmp": "01111", "jlt": "11100", "jgt": "11101", "je": "11111", "hlt": "11010"}
 registers = {"R0": "000", "R1": "001", "R2": "010", "R3": "011",
-            "R4": "100", "R5": "101", "R6": "110", "FLAGS": "111"}
+            "R4": "100", "R5": "101", "R6": "110", "FLAGS": "111"}    
 unused_bit = {"add": 2, "sub": 2, "movi":1, "mov": 5,"ld": 1, "st": 1, "mul": 2, "div": 5, "rs": 1, "ls": 1, 
             "xor": 2, "or": 2, "and": 2, "not": 5, "cmp": 5, "jmp": 4, "jlt": 4, "jgt": 4, "je": 4, "hlt": 11}
 
 if("hlt" in Instruction_function):
     if(Instruction_function[-1]!="hlt"):
-        print("\nhlt not being used as the last instruction\n")
+        print("\nhlt not being used as the last instruction\n")  #HLT must be used as the last instruction.
         quit()
-else:
+else:     #Checking if HLT is present in the program if it doesn't exist the program will not continue.
     print(f"\nError! : Missing hlt instruction!.\n")
     quit()
-# quit()
 
-# print(opcode)
-# print(registers)
-# print(unused_bit)
 """
+These were the Parameters that were considered by us to complete the project.
 total bits = 16
 register = 3
 op code = 5
-immediate value = 7
+immediate value = 7        
 memory address = 7
 unused bit = depends
 halt = 5 op code + 11 unused
 """
 
 Binary_list=[]
+
+#We all have divided the work into four parts every person completes 5 functions.
 
 #Vishal Kumar Maurya 2022580 code Commences  -/-/-/
 
@@ -157,7 +161,7 @@ def left_shift(lst,q):
     for i in range(7-len(x)):
         tk.append("0")
     tk.append(x)
-    x="".join(tk)
+    x="".join(tk)         #Converting the immediate value into the binary form and adding zeros in the front to make it look like 16 bit form.
     new_lst.append(registers[lst[1]])
     new_lst.append(x)
     Binary_list.append(''.join(new_lst))
@@ -210,7 +214,7 @@ def load(lst,q):
 def multiply(lst,q):
     new_lst = []
     new_lst.append(opcode[lst[0]])
-    new_lst.append('0' * unused_bit[lst[0]])  # add unused bits
+    new_lst.append('0' * unused_bit[lst[0]])  # adding unused bits
     new_lst.append(registers[lst[1]])
     new_lst.append(registers[lst[2]])
     new_lst.append(registers[lst[3]])
@@ -253,7 +257,7 @@ def Or(lst,q):
 def invert(lst,q):
     new_lst = []
     new_lst.append(opcode[lst[0]])
-    new_lst.append('0' * unused_bit[lst[0]])  # add unused bits
+    new_lst.append('0' * unused_bit[lst[0]])  # adding unused bits
     new_lst.append(registers[lst[1]])
     new_lst.append(registers[lst[2]])
     Binary_list.append(''.join(new_lst))
@@ -284,7 +288,7 @@ def halt(lst,q):
     new_lst.append('0' * unused_bit[lst[0]])
     Binary_list.append(''.join(new_lst))
     print("\n",q,'_'.join(new_lst))
-
+    print(f'// {unused_bit["hlt"]} unused bits.\n')
 #wasif ali 2022583 code Terminates  -/-/-/  
 #Vineet 2022575 code commences -/-/-/
 
@@ -339,11 +343,11 @@ def jump_if_equal(lst,q):
     print(f'// {unused_bit["je"]} unused bits.\n')
 
 # vineet 2022575 code terminates -/-/-/
-counter = 0
+counter = 0           #This variable will act as a program counter.It will also show the line number at which error has been caught.
 # cck=
 
-for i in range(len(Instruction_list)):
-    if flag == 1:
+for i in range(len(Instruction_list)):              #Running each instruction line by line and checking for the errors.
+    if flag == 1:                                   #Loop will only run when the flag is equal to "1" i.e. all the instruction up to the program counter are correct and relevant.
         x=bin(counter)
         x=x[2:]
         tk=[]
@@ -352,9 +356,11 @@ for i in range(len(Instruction_list)):
             tk.append("0")
         tk.append(str(x))
         x="".join(tk)
-        x=x+" : "
-        # print("HE",x)
-        # print("i: ",i)
+        x=x+" : "                                  #Converting the program counter into binary and adding zero in front of it to make it of seven bitsto show the execution line by line on the terminal.
+
+        #Now we are checking each instruction from the instruction list and performing the operation as required to convert it into Binary.
+        #Flag will be set to zero if any ambiguity is found and code will not execute after that.
+        
         if (Instruction_list[i][0] == "add"):
             try:
                 addition(Instruction_list[i],x)
@@ -374,7 +380,7 @@ for i in range(len(Instruction_list)):
         elif (Instruction_list[i][0] == "mov"): #OK
             if (Instruction_list[i][2][0]== "$"):
                 try:
-                    if(0<=int(Instruction_list[i][2][1:])<=127):
+                    if(0<=int(Instruction_list[i][2][1:])<=127):    #Checking if the immediate value is between [0,127].
                         move_immediate(Instruction_list[i],x)
                     else:
                         flag = 0
@@ -538,23 +544,24 @@ for i in range(len(Instruction_list)):
         elif (Instruction_list[i][0] == "hlt"):
             try:
                 halt(Instruction_list[i],x)
-                flag=0
+                # flag=0
+                break
             except:
                 # print("sv",len(List),counter)
                 if(counter+1 != len(variables)+len(Instruction_list)):
                     flag=0
                     print(f"\nGeneral Syntax Error! in line no. {counter+1} :- found hlt more than once.")
-        else:
-            flag=0
+        else:                       #Checking error for wrong typos in instruction name.
+            flag=0  
             print("\nERROR!: Typos in instruction name")
         counter+=1
 
 #Printing the file :
 # print(Binary_list)
 to_print=r'E:\One Drive\OneDrive - indraprashtha institute of information technology\Practise code\python\Assignment\printer.txt'
-if (flag==1):
+if (flag==1):                         #Printing only when there are no errors in the test file or flag equals to 1.
     with open(to_print,"w") as f:
-        for i in Binary_list:
+        for i in Binary_list:         #Printing the binary list line by line into the needed file.
             f.write(i+"\n")
         f.close()      
         
