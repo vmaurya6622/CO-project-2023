@@ -588,7 +588,7 @@ for i in range(len(List)):
                     print(f"\nFound 'hlt' at Line No.:- {Line_index +  Newline_after  + counter + 1}.")
                     break
                 else:
-                    flag=0
+                    flag=0      # we have considered this condition also as an error BTW you can comment it to print the conversion into the file for the data before 'hlt' line.
                     print(f"\nERROR! : 'hlt' not being used as the Last Instruction. Found hlt at Line no. :- {Line_index +  Newline_after  + counter + 1}.\n")
                     
             else:    #Checking error for wrong typos in instruction name.
