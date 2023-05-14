@@ -47,16 +47,18 @@ def binary_convertor(n):        #Function to convert any immediate number to its
 
 label_dict = {}        #Dictionary of all the labels present in the testing file.
 instruction_index = 0  #Who store the index of the instructions so that easy traversal can be possible.
+Line_index = 0
+Line_index_check = 0
 
 for i in range(len(List)):
     if (List[i] != "\n"):
-        lnew = List[i].strip().split()     #.strip().split() Has been used to remove all the white spaces and new line characters.
+        lnew = List[i].strip().split()    #.strip().split() Has been used to remove all the white spaces and new line characters.
         if lnew[0] == "var":
             if check == 0:
                 variables.append(lnew[1])
-            else:              #If the variables are declared after an instruction or Not at the beginning then the program should exit.
+            else:                        #If the variables are declared after an instruction or Not at the beginning then the program should exit.
                 flag = 0
-                print("\nERROR!: Variables not declared at the beginning\n")   
+                print(f"\nERROR! Line no : {i+1}  Variables not declared at the beginning\n")
                 quit()
         
         elif (lnew[0][-1] == ":"):
@@ -67,6 +69,9 @@ for i in range(len(List)):
             Instruction_list.append(lnew)
             check = 1
             instruction_index += 1
+            if (Line_index_check == 0):
+                Line_index = i
+                Line_index_check = 1
         
         else:        
             length = len(lnew)
@@ -74,11 +79,11 @@ for i in range(len(List)):
             Instruction_list.append(lnew)
             check = 1
             instruction_index += 1
-            
+            if (Line_index_check == 0):
+                Line_index = i
+                Line_index_check = 1
+
 Instruction_function = [Instruction_list[i][0] for i in range(len(Instruction_list))]
-# print(Instruction_function)
-# print(label_dict)
-# print(Instruction_list)
 
 length = len(Instruction_list)
 variable_dict = {}
@@ -367,9 +372,9 @@ def jump_if_equal(lst,q):
     print(f'// {unused_bit["je"]} unused bits.\n')
 
 # vineet 2022575 code terminates -/-/-/
-counter = 0           #This variable will act as a program counter.It will also show the line number at which error has been caught.
 
-def longest_chain_of_neg_ones(lst, index):
+
+def longest_chain_of_neg_ones(lst, index):   
     chain_length = 1
     current_index = index + 1
 
@@ -379,231 +384,222 @@ def longest_chain_of_neg_ones(lst, index):
 
     return chain_length
 
+counter = 0           #This variable will act as a program counter.It will also show the line number at which error has been caught.
+Newline_after = 0
+List = List[Line_index:]
 
-# print(len(Instruction_list) , len(List))
-# ui=0
-#line_number
-# print(line_number)
+for i in range(len(List)):
+    if (List[i]!='\n'): 
+        if flag == 1:           #Loop will only run when the flag is equal to "1" i.e. all the instruction up to the program counter are correct and relevant.
+            x=bin(counter)
+            x=x[2:]
+            tk=[]
+            for j in range(7-len(x)):
+                tk.append("0")
+            tk.append(str(x))
+            x="".join(tk)
+            x=x+" : "            #Converting the program counter into binary and adding zero in front of it to make it of seven bitsto show the execution line by line on the terminal.
+            
+            #Now we are checking each instruction from the instruction list and performing the operation as required to convert it into Binary.
+            #Flag will be set to zero if any ambiguity is found and code will not execute after that.
 
-for i in range(len(Instruction_list)):              #Running each instruction line by line and checking for the errors.
-    # if(line_number[i] == -1 or line_number[i+1]==-1):
-    #     # ui+=1
-    #     print(i)
-    #     counter+=longest_chain_of_neg_ones(line_number,i)
-    if flag == 1:                                   #Loop will only run when the flag is equal to "1" i.e. all the instruction up to the program counter are correct and relevant.
-        x=bin(counter)
-        x=x[2:]
-        tk=[]
-        # print(counter)
-        for j in range(7-len(x)):
-            tk.append("0")
-        tk.append(str(x))
-        x="".join(tk)
-        x=x+" : "                                  #Converting the program counter into binary and adding zero in front of it to make it of seven bitsto show the execution line by line on the terminal.
-
-        #Now we are checking each instruction from the instruction list and performing the operation as required to convert it into Binary.
-        #Flag will be set to zero if any ambiguity is found and code will not execute after that.
-
-        if (Instruction_list[i][0] == "add"):
-            try:
-                addition(Instruction_list[i],x)
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
-                # break
-
-        elif (Instruction_list[i][0] == "sub"):
-            try:
-                substraction(Instruction_list[i],x)
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
-                # break
-
-        elif (Instruction_list[i][0] == "mov"): #OK
-            if (Instruction_list[i][2][0]== "$"):
+            if (Instruction_list[counter][0] == "add"):
                 try:
-                    if(0<=int(Instruction_list[i][2][1:])<=127):    #Checking if the immediate value is between [0,127].
-                        move_immediate(Instruction_list[i],x)
-                    else:
-                        flag = 0
-                        print("\nERROR! Line No. :",counter+1,"Immediate value must be between [0,127]\n")
-                        # sys.exit()   
+                    addition(Instruction_list[counter],x)
                 except:
                     flag = 0
-                    print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
+                    # break
 
-                
-            else:
+            elif (Instruction_list[counter][0] == "sub"):
                 try:
-                    move_register(Instruction_list[i],x)
+                    substraction(Instruction_list[counter],x)
                 except:
-                    flag=0
-                    print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
+                    flag = 0
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
+                    # break
 
-        elif (Instruction_list[i][0] == "mul"):
-            try:
-                multiply(Instruction_list[i],x)
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
+            elif (Instruction_list[counter][0] == "mov"): #OK
+                if (Instruction_list[counter][2][0]== "$"):
+                    try:
+                        if(0<=int(Instruction_list[counter][2][1:])<=127):
+                            move_immediate(Instruction_list[counter],x)
+                        else:
+                            flag = 0
+                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Immediate value must be between [0,127]\n")
+                            # sys.exit()   
+                    except:
+                        flag = 0
+                        print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
 
-        elif (Instruction_list[i][0] == "div"):
-            try:
-                divide(Instruction_list[i],x)
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
+                    
+                else:
+                    try:
+                        move_register(Instruction_list[counter],x)
+                    except:
+                        flag=0
+                        print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
 
-        elif (Instruction_list[i][0] == "rs"):
-            try:
-                    if(0<=int(Instruction_list[i][2][1:])<=127):
-                        right_shift(Instruction_list[i],x)
+            elif (Instruction_list[counter][0] == "mul"):
+                try:
+                    multiply(Instruction_list[counter],x)
+                except:
+                    flag = 0
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
+
+            elif (Instruction_list[counter][0] == "div"):
+                try:
+                    divide(Instruction_list[counter],x)
+                except:
+                    flag = 0
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
+
+            elif (Instruction_list[counter][0] == "rs"):
+                try:
+                        if(0<=int(Instruction_list[counter][2][1:])<=127):
+                            right_shift(Instruction_list[counter],x)
+                        else:
+                            flag = 0
+                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Immediate value must be between [0,127]\n")
+                            # sys.exit()   
+                except:
+                    flag = 0
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
+
+            elif (Instruction_list[counter][0] == "ls"):
+                try:
+                        if(0<=int(Instruction_list[counter][2][1:])<=127):
+                            left_shift(Instruction_list[counter],x)
+                        else:
+                            flag = 0
+                            print("\nERROR! : Immediate value must be between [0,127]\n")
+                            # sys.exit()   
+                except:
+                    flag = 0
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
+
+            elif (Instruction_list[counter][0] == "xor"):
+                try:
+                    xor_operation(Instruction_list[counter],x)
+                except:
+                    flag = 0
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
+
+            elif (Instruction_list[counter][0] == "or"):
+                try:
+                    Or(Instruction_list[counter],x)
+                except:
+                    flag = 0
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
+
+            elif (Instruction_list[counter][0] == "and"):
+                try:
+                    And(Instruction_list[counter],x)
+                except:
+                    flag = 0
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name")
+
+            elif (Instruction_list[counter][0] == "not"):
+                try:
+                    invert(Instruction_list[counter],x)
+                except:
+                    flag = 0
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name")
+
+            elif (Instruction_list[counter][0] == "cmp"):
+                try:
+                    compare(Instruction_list[counter],x)
+                except:
+                    flag = 0
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name")
+
+            elif (Instruction_list[counter][0] == "ld"):
+                try:
+                    if(Instruction_list[counter][2] in variables):
+                        load(Instruction_list[counter],x)
                     else:
                         flag = 0
-                        print("\nERROR! Line No. :",counter+1,"Immediate value must be between [0,127]\n")
-                        # sys.exit()   
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
+                        if (Instruction_list[counter][2] in label_dict):
+                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Misuse of labels as variables\n")
+                        else:
+                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Use of undefined variables\n")
+    
+                except:
+                    flag = 0
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
 
-        elif (Instruction_list[i][0] == "ls"):
-            try:
-                    if(0<=int(Instruction_list[i][2][1:])<=127):
-                        left_shift(Instruction_list[i],x)
+            elif (Instruction_list[counter][0] == "st"):
+                try:
+                    if(Instruction_list[counter][2] in variables):
+                        store(Instruction_list[counter],x)
                     else:
                         flag = 0
-                        print("\nERROR!: Immediate value must be between [0,127]\n")
-                        # sys.exit()   
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
-
-        elif (Instruction_list[i][0] == "xor"):
-            try:
-                xor_operation(Instruction_list[i],x)
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
-
-        elif (Instruction_list[i][0] == "or"):
-            try:
-                Or(Instruction_list[i],x)
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
-
-        elif (Instruction_list[i][0] == "and"):
-            try:
-                And(Instruction_list[i],x)
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name")
-
-        elif (Instruction_list[i][0] == "not"):
-            try:
-                invert(Instruction_list[i],x)
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name")
-
-        elif (Instruction_list[i][0] == "cmp"):
-            try:
-                compare(Instruction_list[i],x)
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name")
-
-        elif (Instruction_list[i][0] == "ld"):
-            try:
-                if(Instruction_list[i][2] in variables):
-                    load(Instruction_list[i],x)
-                else:
+                        if (Instruction_list[counter][2] in label_dict):
+                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Misuse of labels as variables\n")
+                        else:
+                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Use of undefined variables\n")  
+                except:
                     flag = 0
-                    if (Instruction_list[i][2] in label_dict):
-                        print("\nERROR! Line No. :",counter+1,"Misuse of labels as variables\n")
-                    else:
-                        print("\nERROR!Line No. :",counter+1,"Use of undefined variables\n")
-
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
-
-        elif (Instruction_list[i][0] == "st"):
-            try:
-                if(Instruction_list[i][2] in variables):
-                    store(Instruction_list[i],x)
-                else:
+                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name")
+                    
+            elif (Instruction_list[counter][0] == "jmp"):
+                try:
+                    unconditionaljump(Instruction_list[counter],x)
+                except:
                     flag = 0
-                    if (Instruction_list[i][2] in label_dict):
-                        print("\nERROR! Line No. :",counter+1,"Misuse of labels as variables\n")
+                    if (Instruction_list[counter][1] in variable_dict):
+                        print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Misuse of variables as labels\n")
                     else:
-                        print("\nERROR!Line No. :",counter+1,"Use of undefined variables\n")  
-            except:
-                flag = 0
-                print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name")
+                        print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Use of undefined labels\n")
                 
-        elif (Instruction_list[i][0] == "jmp"):
-            try:
-                unconditionaljump(Instruction_list[i],x)
-            except:
-                flag = 0
-                if (Instruction_list[i][1] in variable_dict):
-                    print("\nERROR! Line No. :",counter+1,"Misuse of variables as labels\n")
-                else:
-                    print("\nERROR!Line No. :",counter+1,"Use of undefined labels\n")
-            
-        elif (Instruction_list[i][0] == "jlt"):
-            try:
-                jump_if_lessthan(Instruction_list[i],x)
-            except:
-                flag = 0
-                if (Instruction_list[i][1] in variable_dict):
-                    print("\nERROR! Line No. :",counter+1,"Misuse of variables as labels\n")
-                else:
-                    print("\nERROR!Line No. :",counter+1,"Use of undefined labels\n")
-            
-        elif (Instruction_list[i][0] == "jgt"):
-            try:
-                jumpifgreaterthan(Instruction_list[i],x)
-            except:
-                flag = 0
-                if (Instruction_list[i][1] in variable_dict):
-                    print("\nERROR! Line No. :",counter+1,"Misuse of variables as labels\n")
-                else:
-                    print("\nERROR!Line No. :",counter+1,"Use of undefined labels\n")
+            elif (Instruction_list[counter][0] == "jlt"):
+                try:
+                    jump_if_lessthan(Instruction_list[counter],x)
+                except:
+                    flag = 0
+                    if (Instruction_list[counter][1] in variable_dict):
+                        print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Misuse of variables as labels\n")
+                    else:
+                        print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Use of undefined labels\n")
 
-            
-        elif (Instruction_list[i][0] == "je"):
-            try:
-                jump_if_equal(Instruction_list[i],x)  
-            except:
-                flag = 0
-                if (Instruction_list[i][1] in variable_dict):
-                    print("\nERROR!Line No. :",counter+1," Misuse of variables as labels\n")
+            elif (Instruction_list[counter][0] == "jgt"):
+                try:
+                    jumpifgreaterthan(Instruction_list[counter],x)
+                except:
+                    flag = 0
+                    if (Instruction_list[counter][1] in variable_dict):
+                        print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Misuse of variables as labels\n")
+                    else:
+                        print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Use of undefined labels\n")
+
+            elif (Instruction_list[counter][0] == "je"):
+                try:
+                    jump_if_equal(Instruction_list[counter],x)  
+                except:
+                    flag = 0
+                    if (Instruction_list[counter][1] in variable_dict):
+                        print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1," Misuse of variables as labels\n")
+                    else:
+                        print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Use of undefined labels\n")
+
+            elif (Instruction_list[counter][0] == "hlt"):
+                if(counter == len(Instruction_list) - 1):
+                    halt(Instruction_list[counter],x)
+                    print(f"\nFound 'hlt' at Line No.:- {Line_index +  Newline_after  + counter + 1}.")
+                    break
                 else:
-                    print("\nERROR! Line No. :",counter+1,"Use of undefined labels\n")
-            
-        elif (Instruction_list[i][0] == "hlt"):
-            try:
-                halt(Instruction_list[i],x)
-                # flag=0
-                if(counter+1<len(Instruction_list)):
-                    print("\nHlt not being used as the last instruction!.")
-                
-                else : print(f"\nFound 'hlt'.")
-                break
-            except:
-                # print("sv",len(List),counter)
-                if(counter+1 != len(variables)+len(Instruction_list)):
                     flag=0
-                    print(f"\nGeneral Syntax Error! in line no. {counter+1} :- found hlt more than once.")
-        else:                       #Checking error for wrong typos in instruction name.
-            flag=0      
-            print(f"\nERROR!: in line no. :- {counter+1} Typos in instruction name")
-        counter+=1
+                    print(f"\nERROR! : 'hlt' not being used as the Last Instruction. Found hlt at Line no. :- {Line_index +  Newline_after  + counter + 1}.\n")
+                    
+            else:    #Checking error for wrong typos in instruction name.
+                flag=0
+                print(f"\nERROR! : Line no.:- {Line_index +  Newline_after  + counter + 1} Typos in instruction name")
+            counter+=1
+            
+    else:
+        Newline_after += 1
 
-#Printing the file :
+#Printing the file with the binary codes:
 # print(Binary_list)
 if (flag==1):                         #Printing only when there are no errors in the test file or flag equals to 1.
     with open(to_print,"w") as f:
