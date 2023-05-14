@@ -1,8 +1,12 @@
-# IMPORTANT :- vineet(2022575) has not contributed significantly in the completion of the project.
+# IMPORTANT :- vineet(2022575) has NOT contributed significantly in the completion of the project.
 
 
 #Providing file location of the file to test into the program
 file_location=r"E:\One Drive\OneDrive - indraprashtha institute of information technology\Practise code\python\Assignment\test2.txt"
+
+#Providing the location to which the binary Converted data will be printed.
+to_print=r'E:\One Drive\OneDrive - indraprashtha institute of information technology\Practise code\python\Assignment\printer.txt'
+
 f = open(file_location,"r") #provide the file name here
 List = f.readlines()
 f.close()
@@ -12,6 +16,24 @@ variables = []             #All the variables which were declared at the beginni
 check = 0
 global flag     #Declaring flag as the global variable.
 flag=1
+# print(List)
+
+#Example of algorithm followed here :-
+#Replacing the new line character with -1.
+# ['\n', 'label1:\tadd\tR5 R2\tR1\n', 'sub FLAG R1 R3\n', 'movi R5 R1\n', '\n', '\n', 'ld R4  \tlabel1\n', 'hlt\n', 'hlt\n']
+# [-1, 2, 3, 4, -1, -1, 7, 8, 9]
+
+line_number=[]    #
+ctr=1
+for i in List:
+    # print(i)
+    if(len(i)==1):
+        line_number.append(-1)
+        ctr+=1
+    else:
+        line_number.append(ctr)
+        ctr+=1
+# print(line_number)
 
 def binary_convertor(n):        #Function to convert any immediate number to its binary form and adding zero(s) in front of it to make it of 7 bits.
     x=bin(n)
@@ -72,6 +94,19 @@ if len(variables)!=0:
         variable_dict[i] = x
         length = length + 1
 
+"""
+These were the Parameters that were considered by us to complete the project.
+total bits = 16
+register = 3
+op code = 5
+immediate value = 7        
+memory address = 7
+unused bit = depends
+halt = 5 op code + 11 unused
+"""
+
+#fancy Introduction! ^_^
+
 print("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+  WELCOME TO ASSEMBLY TO MACHINE CODE EXCHANGER  =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n")
 
 #Making the dictionaries naming OP codes, registers and unused bits. it will be useful and easy to get an access to all of them.
@@ -92,18 +127,7 @@ else:     #Checking if HLT is present in the program if it doesn't exist the pro
     print(f"\nError! : Missing hlt instruction!.\n")
     quit()
 
-"""
-These were the Parameters that were considered by us to complete the project.
-total bits = 16
-register = 3
-op code = 5
-immediate value = 7        
-memory address = 7
-unused bit = depends
-halt = 5 op code + 11 unused
-"""
-
-Binary_list=[]
+Binary_list=[]      #Most important! this list will store the binary conversion in the form of strings.
 
 #We all have divided the work into four parts every person completes 5 functions.
 
@@ -344,9 +368,28 @@ def jump_if_equal(lst,q):
 
 # vineet 2022575 code terminates -/-/-/
 counter = 0           #This variable will act as a program counter.It will also show the line number at which error has been caught.
-# cck=
+
+def longest_chain_of_neg_ones(lst, index):
+    chain_length = 1
+    current_index = index + 1
+
+    while current_index < len(lst) and lst[current_index] == -1:
+        chain_length += 1
+        current_index += 1
+
+    return chain_length
+
+
+# print(len(Instruction_list) , len(List))
+# ui=0
+#line_number
+# print(line_number)
 
 for i in range(len(Instruction_list)):              #Running each instruction line by line and checking for the errors.
+    # if(line_number[i] == -1 or line_number[i+1]==-1):
+    #     # ui+=1
+    #     print(i)
+    #     counter+=longest_chain_of_neg_ones(line_number,i)
     if flag == 1:                                   #Loop will only run when the flag is equal to "1" i.e. all the instruction up to the program counter are correct and relevant.
         x=bin(counter)
         x=x[2:]
@@ -360,7 +403,7 @@ for i in range(len(Instruction_list)):              #Running each instruction li
 
         #Now we are checking each instruction from the instruction list and performing the operation as required to convert it into Binary.
         #Flag will be set to zero if any ambiguity is found and code will not execute after that.
-        
+
         if (Instruction_list[i][0] == "add"):
             try:
                 addition(Instruction_list[i],x)
@@ -481,7 +524,7 @@ for i in range(len(Instruction_list)):              #Running each instruction li
                         print("\nERROR! Line No. :",counter+1,"Misuse of labels as variables\n")
                     else:
                         print("\nERROR!Line No. :",counter+1,"Use of undefined variables\n")
-  
+
             except:
                 flag = 0
                 print("\nERROR! Line No. :",counter+1,"Typos in instruction name or register name\n")
@@ -545,6 +588,10 @@ for i in range(len(Instruction_list)):              #Running each instruction li
             try:
                 halt(Instruction_list[i],x)
                 # flag=0
+                if(counter+1<len(Instruction_list)):
+                    print("\nHlt not being used as the last instruction!.")
+                
+                else : print(f"\nFound 'hlt'.")
                 break
             except:
                 # print("sv",len(List),counter)
@@ -552,16 +599,14 @@ for i in range(len(Instruction_list)):              #Running each instruction li
                     flag=0
                     print(f"\nGeneral Syntax Error! in line no. {counter+1} :- found hlt more than once.")
         else:                       #Checking error for wrong typos in instruction name.
-            flag=0  
-            print("\nERROR!: Typos in instruction name")
+            flag=0      
+            print(f"\nERROR!: in line no. :- {counter+1} Typos in instruction name")
         counter+=1
 
 #Printing the file :
 # print(Binary_list)
-to_print=r'E:\One Drive\OneDrive - indraprashtha institute of information technology\Practise code\python\Assignment\printer.txt'
 if (flag==1):                         #Printing only when there are no errors in the test file or flag equals to 1.
     with open(to_print,"w") as f:
         for i in Binary_list:         #Printing the binary list line by line into the needed file.
             f.write(i+"\n")
         f.close()      
-        
