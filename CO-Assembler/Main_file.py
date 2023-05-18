@@ -1,15 +1,21 @@
 # IMPORTANT :- vineet(2022575) has NOT contributed significantly in the completion of the project.
 
-#Providing file location of the file to test into the program
+#Providing file location of the file to test into the program (INPUT)
 #file_location=r"C:\Users\PC\Documents\co-project\normal\project.txt"
-#Providing the location to which the binary Converted data will be printed.
-#to_print=r"C:\Users\PC\Documents\co-project\normal\output.txt"
 
 #f = open(file_location,"r") #provide the file name here
-import sys
-List = sys.stdin.readlines()
 # List = sys.system.readlines()
 #f.close()
+
+#Providing the location to which the binary Converted data will be printed.(OUTPUT)
+#to_print=r"C:\Users\PC\Documents\co-project\normal\output.txt"
+
+
+import sys
+List = sys.stdin.readlines()  #Taking input from STDIN if BASH runs in UBUNTU
+
+
+
 Instruction_list = []      # Main list of all the instructions present in the input file
 variables = []             #All the variables which were declared at the beginning of the program will be kept in this list.
 check = 0
@@ -67,7 +73,9 @@ for i in range(len(List)):
 Instruction_function = [Instruction_list[i][0] for i in range(len(Instruction_list))]
 
 length = len(Instruction_list)
+
 variable_dict = {}
+
 if len(variables)!=0:
     for i in variables:
         x=bin(length)
@@ -336,7 +344,7 @@ def jump_if_lessthan(lst,q):
     new_lst.append('0' * unused_bit[lst[0]])
     new_lst.append(label_dict[lst[1]])
     Binary_list.append(''.join(new_lst))
-   # print("\n",q,'_'.join(new_lst))
+    # print("\n",q,'_'.join(new_lst))
     #print(f'// {unused_bit["jlt"]} unused bits.\n')
 
 def jump_if_equal(lst,q):
@@ -407,8 +415,8 @@ for i in range(len(List)):
                         print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
 
                 elif (Instruction_list[counter][2][0].isnumeric()):
-                       print("\"",Instruction_list[counter][2],"\" is not defined\n")
-                       flag = 0
+                        print("\"",Instruction_list[counter][2],"\" is not defined\n")
+                        flag = 0
                 else:
                     try:
                         move_register(Instruction_list[counter],x)
@@ -578,7 +586,17 @@ for i in range(len(List)):
     else:
         Newline_after += 1
 
-#Printing the file with the binary codes:
+
+#if you want to print the output in another file...
+# if (flag==1):                         #Printing only when there are no errors in the test file or flag equals to 1.
+#     with open(to_print,"w") as f:
+#         for i in Binary_list:         #Printing the binary list line by line into the needed file.
+#             f.write(i+"\n")
+#         f.close()  
+
+
+
+#Printing the binary codes at ::STDOUT
 if (flag==1):                         #Printing only when there are no errors in the test file or flag equals to 1.
     for i in Binary_list:         #Printing the binary list line by line into the needed file.
         sys.stdout.write(i)
