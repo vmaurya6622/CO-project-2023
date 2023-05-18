@@ -1,9 +1,9 @@
 # IMPORTANT :- vineet(2022575) has NOT contributed significantly in the completion of the project.
 
 #Providing file location of the file to test into the program
-file_location=r"C:\Users\PC\Documents\co-project\normal\project.txt"
+#file_location=r"C:\Users\PC\Documents\co-project\normal\project.txt"
 #Providing the location to which the binary Converted data will be printed.
-to_print=r"C:\Users\PC\Documents\co-project\normal\output.txt"
+#to_print=r"C:\Users\PC\Documents\co-project\normal\output.txt"
 
 #f = open(file_location,"r") #provide the file name here
 import sys
