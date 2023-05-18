@@ -1,39 +1,20 @@
 # IMPORTANT :- vineet(2022575) has NOT contributed significantly in the completion of the project.
 
-
 #Providing file location of the file to test into the program
-file_location=r"E:\One Drive\OneDrive - indraprashtha institute of information technology\Practise code\python\Assignment\test2.txt"
-
+file_location=r"C:\Users\PC\Documents\co-project\normal\project.txt"
 #Providing the location to which the binary Converted data will be printed.
-to_print=r'E:\One Drive\OneDrive - indraprashtha institute of information technology\Practise code\python\Assignment\printer.txt'
+to_print=r"C:\Users\PC\Documents\co-project\normal\output.txt"
 
-f = open(file_location,"r") #provide the file name here
-List = f.readlines()
-f.close()
+#f = open(file_location,"r") #provide the file name here
 import sys
+List = sys.stdin.readlines()
+# List = sys.system.readlines()
+#f.close()
 Instruction_list = []      # Main list of all the instructions present in the input file
 variables = []             #All the variables which were declared at the beginning of the program will be kept in this list.
 check = 0
 global flag     #Declaring flag as the global variable.
 flag=1
-# print(List)
-
-#Example of algorithm followed here :-
-#Replacing the new line character with -1.
-# ['\n', 'label1:\tadd\tR5 R2\tR1\n', 'sub FLAG R1 R3\n', 'movi R5 R1\n', '\n', '\n', 'ld R4  \tlabel1\n', 'hlt\n', 'hlt\n']
-# [-1, 2, 3, 4, -1, -1, 7, 8, 9]
-
-line_number=[]    #
-ctr=1
-for i in List:
-    # print(i)
-    if(len(i)==1):
-        line_number.append(-1)
-        ctr+=1
-    else:
-        line_number.append(ctr)
-        ctr+=1
-# print(line_number)
 
 def binary_convertor(n):        #Function to convert any immediate number to its binary form and adding zero(s) in front of it to make it of 7 bits.
     x=bin(n)
@@ -109,11 +90,7 @@ memory address = 7
 unused bit = depends
 halt = 5 op code + 11 unused
 """
-
-#fancy Introduction! ^_^
-
-print("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+  WELCOME TO ASSEMBLY TO MACHINE CODE EXCHANGER  =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n")
-
+#print("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+  WELCOME TO ASSEMBLY TO MACHINE CODE EXCHANGER  =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n")
 #Making the dictionaries naming OP codes, registers and unused bits. it will be useful and easy to get an access to all of them.
 
 opcode = {"add": "00000", "sub": "00001","movi":"00010", "mov": "00011", "ld": "00100", "st": "00101", "mul": "00110", 
@@ -129,7 +106,7 @@ if("hlt" in Instruction_function):
         print("\nhlt not being used as the last instruction\n")  #HLT must be used as the last instruction.
         quit()
 else:     #Checking if HLT is present in the program if it doesn't exist the program will not continue.
-    print(f"\nError! : Missing hlt instruction!.\n")
+    print(f"\nError: No hlt instruction present.\n")
     quit()
 
 Binary_list=[]      #Most important! this list will store the binary conversion in the form of strings.
@@ -145,9 +122,9 @@ def substraction(lst,q):
     new_lst.append(registers[lst[1]])
     new_lst.append(registers[lst[2]])
     new_lst.append(registers[lst[3]])
-    print("\n",q,'_'.join(new_lst))
     Binary_list.append("".join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def move_register(lst,q):
     new_lst = []
@@ -155,9 +132,9 @@ def move_register(lst,q):
     new_lst.append('0' * unused_bit[lst[0]])  # add unused bits
     new_lst.append(registers[lst[1]])
     new_lst.append(registers[lst[2]])
-    print("\n",q,'_'.join(new_lst))
     Binary_list.append(''.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def divide(lst,q):
     new_lst = []
@@ -165,9 +142,9 @@ def divide(lst,q):
     new_lst.append('0' * unused_bit[lst[0]])  # add unused bits
     new_lst.append(registers[lst[1]])
     new_lst.append(lst[2])
-    print("\n",q,'_'.join(new_lst))
     Binary_list.append(''.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def store(lst,q):
     new_lst = []
@@ -176,8 +153,8 @@ def store(lst,q):
     new_lst.append(registers[lst[1]])
     new_lst.append(variable_dict[lst[2]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def left_shift(lst,q):
     new_lst = []
@@ -194,8 +171,8 @@ def left_shift(lst,q):
     new_lst.append(registers[lst[1]])
     new_lst.append(x)
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 #Vishal kumar Maurya 2022580 code Terminates  -/-/-/
 #subham maurya 2022510 code commences   -/-/-/
@@ -208,8 +185,8 @@ def addition(lst,y):
     new_lst.append(registers[lst[2]])
     new_lst.append(registers[lst[3]])
     Binary_list.append(''.join(new_lst))
-    print("\n",y,'_'.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",y,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def move_immediate(lst,q):
     new_lst = []
@@ -225,10 +202,10 @@ def move_immediate(lst,q):
     tk.append(str(x))
     x="".join(tk)
     new_lst.append(x)
-    print("\n",q,'_'.join(new_lst))
     Binary_list.append(''.join(new_lst))
     value = lst[0] + "i"
-    print(f"// {unused_bit[value]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[value]} unused bits.\n")
 
 def load(lst,q):
     new_lst = []
@@ -237,8 +214,8 @@ def load(lst,q):
     new_lst.append(registers[lst[1]])
     new_lst.append(variable_dict[lst[2]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def multiply(lst,q):
     new_lst = []
@@ -248,8 +225,8 @@ def multiply(lst,q):
     new_lst.append(registers[lst[2]])
     new_lst.append(registers[lst[3]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def right_shift(lst,q):
     new_lst = []
@@ -266,8 +243,8 @@ def right_shift(lst,q):
     x="".join(tk)
     new_lst.append(x)
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 #subham maurya 2022510 code terminates    -/-/-/
 #Wasif Ali 2022583 code commences -/-/-/
@@ -280,8 +257,8 @@ def Or(lst,q):
     new_lst.append(registers[lst[2]])
     new_lst.append(registers[lst[3]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def invert(lst,q):
     new_lst = []
@@ -290,8 +267,8 @@ def invert(lst,q):
     new_lst.append(registers[lst[1]])
     new_lst.append(registers[lst[2]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def jumpifgreaterthan(lst,q):
     new_lst = []
@@ -299,8 +276,8 @@ def jumpifgreaterthan(lst,q):
     new_lst.append('0' * unused_bit[lst[0]])
     new_lst.append(label_dict[lst[1]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f'// {unused_bit["jgt"]} unused bits.\n')
+    # print("\n",q,'_'.join(new_lst))
+    # print(f'// {unused_bit["jgt"]} unused bits.\n')
 
 def unconditionaljump(lst,q):
     new_lst = []
@@ -308,16 +285,16 @@ def unconditionaljump(lst,q):
     new_lst.append('0' * unused_bit[lst[0]])
     new_lst.append(label_dict[lst[1]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f'// {unused_bit["jmp"]} unused bits.\n')
+    # print("\n",q,'_'.join(new_lst))
+    # print(f'// {unused_bit["jmp"]} unused bits.\n')
 
 def halt(lst,q):
     new_lst = []
     new_lst.append(opcode[lst[0]])
     new_lst.append('0' * unused_bit[lst[0]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f'// {unused_bit["hlt"]} unused bits.\n')
+    #print("\n",q,'_'.join(new_lst))
+    #print(f'// {unused_bit["hlt"]} unused bits.\n')
 #wasif ali 2022583 code Terminates  -/-/-/  
 #Vineet 2022575 code commences -/-/-/
 
@@ -329,8 +306,8 @@ def xor_operation(lst,q):
     new_lst.append(registers[lst[2]])
     new_lst.append(registers[lst[3]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def And(lst,q):
     new_lst = []
@@ -340,8 +317,8 @@ def And(lst,q):
     new_lst.append(registers[lst[2]])
     new_lst.append(registers[lst[3]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    # print("\n",q,'_'.join(new_lst))
+    # print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def compare(lst,q):
     new_lst = []
@@ -350,8 +327,8 @@ def compare(lst,q):
     new_lst.append(registers[lst[1]])
     new_lst.append(registers[lst[2]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f"// {unused_bit[lst[0]]} unused bits.\n")
+    #print("\n",q,'_'.join(new_lst))
+    #print(f"// {unused_bit[lst[0]]} unused bits.\n")
 
 def jump_if_lessthan(lst,q):
     new_lst = []
@@ -359,8 +336,8 @@ def jump_if_lessthan(lst,q):
     new_lst.append('0' * unused_bit[lst[0]])
     new_lst.append(label_dict[lst[1]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f'// {unused_bit["jlt"]} unused bits.\n')
+   # print("\n",q,'_'.join(new_lst))
+    #print(f'// {unused_bit["jlt"]} unused bits.\n')
 
 def jump_if_equal(lst,q):
     new_lst = []
@@ -368,21 +345,10 @@ def jump_if_equal(lst,q):
     new_lst.append('0' * unused_bit[lst[0]])
     new_lst.append(label_dict[lst[1]])
     Binary_list.append(''.join(new_lst))
-    print("\n",q,'_'.join(new_lst))
-    print(f'// {unused_bit["je"]} unused bits.\n')
+    #print("\n",q,'_'.join(new_lst))
+    #print(f'// {unused_bit["je"]} unused bits.\n')
 
 # vineet 2022575 code terminates -/-/-/
-
-
-def longest_chain_of_neg_ones(lst, index):   
-    chain_length = 1
-    current_index = index + 1
-
-    while current_index < len(lst) and lst[current_index] == -1:
-        chain_length += 1
-        current_index += 1
-
-    return chain_length
 
 counter = 0           #This variable will act as a program counter.It will also show the line number at which error has been caught.
 Newline_after = 0
@@ -405,18 +371,26 @@ for i in range(len(List)):
 
             if (Instruction_list[counter][0] == "add"):
                 try:
-                    addition(Instruction_list[counter],x)
+                    if len(Instruction_list[counter]) == 4:
+                        addition(Instruction_list[counter],x)
+                    else:
+                        print("\nError in Line",Line_index +  Newline_after  + counter + 1,": add must contain 3 parameters\n")
+                        flag = 0
                 except:
                     flag = 0
-                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
+                    print("\nError in Line",Line_index +  Newline_after  + counter + 1,": Typos in instruction name or register name\n")
                     # break
 
             elif (Instruction_list[counter][0] == "sub"):
                 try:
-                    substraction(Instruction_list[counter],x)
+                    if len(Instruction_list[counter]) == 4:
+                        substraction(Instruction_list[counter],x)
+                    else:
+                        print("\nError in Line",Line_index +  Newline_after  + counter + 1,": sub must contain 3 parameters\n")
+                        flag = 0
                 except:
                     flag = 0
-                    print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
+                    print("\nError in Line",Line_index +  Newline_after  + counter + 1,": Typos in instruction name or register name\n")
                     # break
 
             elif (Instruction_list[counter][0] == "mov"): #OK
@@ -432,7 +406,9 @@ for i in range(len(List)):
                         flag = 0
                         print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
 
-                    
+                elif (Instruction_list[counter][2][0].isnumeric()):
+                       print("\"",Instruction_list[counter][2],"\" is not defined\n")
+                       flag = 0
                 else:
                     try:
                         move_register(Instruction_list[counter],x)
@@ -456,12 +432,15 @@ for i in range(len(List)):
 
             elif (Instruction_list[counter][0] == "rs"):
                 try:
-                        if(0<=int(Instruction_list[counter][2][1:])<=127):
-                            right_shift(Instruction_list[counter],x)
-                        else:
-                            flag = 0
-                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Immediate value must be between [0,127]\n")
-                            # sys.exit()   
+                    if(0<=int(Instruction_list[counter][2][1:])<=127):
+                        right_shift(Instruction_list[counter],x)
+                    elif(isinstance(Instruction_list[counter][2][1:], int)==False):
+                        flag=0
+                        print(f"\nError! : {Instruction_list[counter][2][1:]} is not an integer")
+                    else:
+                        flag = 0
+                        print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Immediate value must be between [0,127]\n")
+                        #sys.exit()   
                 except:
                     flag = 0
                     print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
@@ -473,7 +452,7 @@ for i in range(len(List)):
                         else:
                             flag = 0
                             print("\nERROR! : Immediate value must be between [0,127]\n")
-                            # sys.exit()   
+                            #sys.exit()   
                 except:
                     flag = 0
                     print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name\n")
@@ -520,9 +499,9 @@ for i in range(len(List)):
                     else:
                         flag = 0
                         if (Instruction_list[counter][2] in label_dict):
-                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Misuse of labels as variables\n")
+                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Misuse of labels as variables \"",Instruction_list[counter][2],"\"\n")
                         else:
-                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Use of undefined variables\n")
+                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Use of undefined variables \"",Instruction_list[counter][2],"\" \n") 
     
                 except:
                     flag = 0
@@ -535,9 +514,9 @@ for i in range(len(List)):
                     else:
                         flag = 0
                         if (Instruction_list[counter][2] in label_dict):
-                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Misuse of labels as variables\n")
+                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Misuse of labels as variables \"",Instruction_list[counter][2],"\"\n")
                         else:
-                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Use of undefined variables\n")  
+                            print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Use of undefined variables \"",Instruction_list[counter][2],"\" \n")  
                 except:
                     flag = 0
                     print("\nERROR! : Line No. :",Line_index +  Newline_after  + counter + 1,"Typos in instruction name or register name")
@@ -585,24 +564,22 @@ for i in range(len(List)):
             elif (Instruction_list[counter][0] == "hlt"):
                 if(counter == len(Instruction_list) - 1):
                     halt(Instruction_list[counter],x)
-                    print(f"\nFound 'hlt' at Line No.:- {Line_index +  Newline_after  + counter + 1}.")
+                    #print(f"\nFound 'hlt' at Line No.:- {Line_index +  Newline_after  + counter + 1}.")
                     break
                 else:
                     flag=0      # we have considered this condition also as an error BTW you can comment it to print the conversion into the file for the data before 'hlt' line.
-                    print(f"\nERROR! : 'hlt' not being used as the Last Instruction. Found hlt at Line no. :- {Line_index +  Newline_after  + counter + 1}.\n")
+                    print(f"\nERROR! : 'hlt' not being used as the Last Instruction. Can't execute lines after hlt, Found at Line no. :- {Line_index +  Newline_after  + counter + 1}.\n")
                     
             else:    #Checking error for wrong typos in instruction name.
                 flag=0
-                print(f"\nERROR! : Line no.:- {Line_index +  Newline_after  + counter + 1} Typos in instruction name")
+                print(f"\nError in Line {Line_index +  Newline_after  + counter + 1} : Invalid operand")
             counter+=1
             
     else:
         Newline_after += 1
 
 #Printing the file with the binary codes:
-# print(Binary_list)
 if (flag==1):                         #Printing only when there are no errors in the test file or flag equals to 1.
-    with open(to_print,"w") as f:
-        for i in Binary_list:         #Printing the binary list line by line into the needed file.
-            f.write(i+"\n")
-        f.close()      
+    for i in Binary_list:         #Printing the binary list line by line into the needed file.
+        sys.stdout.write(i)
+        sys.stdout.write("\n")
